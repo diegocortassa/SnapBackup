@@ -8,10 +8,10 @@
 #
 # crontab configuration example:
 # ############
-# 00 8-18 *  *  1-5 root python snapbackup.py --name mybackup --tag hourly --keep 8 /my/files /snapshots_dir
-# 00 21   *  *  1-5 root python snapbackup.py --name mybackup --tag daily --keep 20 /my/files /snapshots_dir
-# 00 21   *  *  6   root python snapbackup.py --name mybackup --tag weekly --keep 4 /my/files /snapshots_dir
-# 00 21   *  *  7   root [ $(date +\%d) -le 07 ] && python snapbackup.py --name mybackup --tag monthly --keep 6 /my/files /snapshots_dir
+# 00 8-18 *  *  1-5 root python snapback.py --name mybackup --tag hourly --keep 8 /my/files /snapshots_dir
+# 00 21   *  *  1-5 root python snapback.py --name mybackup --tag daily --keep 20 /my/files /snapshots_dir
+# 00 21   *  *  6   root python snapback.py --name mybackup --tag weekly --keep 4 /my/files /snapshots_dir
+# 00 21   *  *  7   root [ $(date +\%d) -le 07 ] && python snapback.py --name mybackup --tag monthly --keep 6 /my/files /snapshots_dir
 #
 
 import argparse
@@ -50,7 +50,7 @@ def main():
     start_time = time.time()
 
     # Lock file
-    lock_file = "/tmp/snapbackup_{}.lock".format(args.name)
+    lock_file = "/tmp/snapback_{}.lock".format(args.name)
     try:
         fp = open(lock_file, "w")
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)

@@ -11,7 +11,7 @@ Keep snapshots in a read only share
 
 #### Usage:
 ```
-usage: snapbackup.py [-h] --name NAME --tag TAG [--keep KEEP] [--excludes EXCLUDES [EXCLUDES ...]] source dest
+usage: snapback.py [-h] --name NAME --tag TAG [--keep KEEP] [--excludes EXCLUDES [EXCLUDES ...]] source dest
 
 Snapshot like Backup using rsync and hard links
 
@@ -30,8 +30,8 @@ options:
 
 #### crontab configuration example:
 ```
-00 8-18 *  *  1-5 root python snapbackup.py --name mybackup --tag hourly --keep 8 /my/files /snapshots_dir
-00 21   *  *  1-5 root python snapbackup.py --name mybackup --tag daily --keep 20 /my/files /snapshots_dir
-00 21   *  *  6   root python snapbackup.py --name mybackup --tag weekly --keep 4 /my/files /snapshots_dir
-00 21   *  *  7   root [ $(date +\%d) -le 07 ] && python snapbackup.py --name mybackup --tag monthly --keep 6 /my/files /snapshots_dir
+00 8-18 *  *  1-5 root python snapback.py --name mybackup --tag hourly --keep 8 /my/files /snapshots_dir
+00 21   *  *  1-5 root python snapback.py --name mybackup --tag daily --keep 20 /my/files /snapshots_dir
+00 21   *  *  6   root python snapback.py --name mybackup --tag weekly --keep 4 /my/files /snapshots_dir
+00 21   *  *  7   root [ $(date +\%d) -le 07 ] && python snapback.py --name mybackup --tag monthly --keep 6 /my/files /snapshots_dir
 ```
