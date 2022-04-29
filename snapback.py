@@ -38,7 +38,7 @@ def main():
     parser.add_argument("--name", help="Backup name", required=True)
     parser.add_argument("--tag", help="Backup tag", required=True)
     parser.add_argument("--keep", dest="keep", help="How many snapshots to keep", type=int, default=0)
-    parser.add_argument('--exclude', action='append', help='Rsync exclude', default=[])
+    parser.add_argument("--exclude", action="append", help="Passed to rsync exclude, you may use as many --exclude options on the command line as you like", default=[])
     parser.add_argument("source", help="Source dir")
     parser.add_argument("dest", help="Directory in which the backup snapshots will be created")
 

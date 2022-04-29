@@ -24,8 +24,7 @@ options:
   --name NAME           Backup name
   --tag TAG             Backup tag
   --keep KEEP           How many snapshots to keep
-  --excludes EXCLUDES [EXCLUDES ...]
-                        Rsync excludes
+  --exclude EXCLUDE     Passed to rsync exclude, you may use as many --exclude options on the command line as you like
 ```
 
 #### crontab configuration example:
