@@ -149,7 +149,7 @@ def rotate(dest=None, name=None, tag=None, keep=-1):
     if keep < 1:
         return
 
-    search_glob = os.path.join(dest, "{}_*_{}".format(name, tag))
+    search_glob = os.path.join(dest, "snapback_{}_*_{}".format(name, tag))
     snapshots_list = sorted(glob.glob(search_glob))
     delete_list = snapshots_list[:-keep]
 
@@ -174,9 +174,9 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
 
     timestamp = time.strftime("%Y%m%d%I%M%S")
 
-    current_snapshot = os.path.join(dest, "{}_{}_{}".format(name, timestamp, tag))
+    current_snapshot = os.path.join(dest, "snapback_{}_{}_{}".format(name, timestamp, tag))
 
-    search_glob = os.path.join(dest, "{}_*_{}".format(name, tag))
+    search_glob = os.path.join(dest, "snapback_{}_*_{}".format(name, tag))
     snapshots_list = sorted(glob.glob(search_glob))
     if len(snapshots_list):
         last_snapshot = snapshots_list[-1]
