@@ -38,7 +38,7 @@ def main():
     parser.add_argument("--name", help="Backup name", required=True)
     parser.add_argument("--tag", help="Backup tag", required=True)
     parser.add_argument("--keep", dest="keep", help="How many snapshots to keep", type=int, default=0)
-    parser.add_argument("--excludes", help="Rsync excludes", nargs='+', default=[])
+    parser.add_argument('--exclude', action='append', help='Rsync exclude', default=[])
     parser.add_argument("source", help="Source dir")
     parser.add_argument("dest", help="Directory in which the backup snapshots will be created")
 
@@ -67,7 +67,7 @@ def main():
         sys.exit(1)
 
     logging.info("Calling sync")
-    res = sync(source=args.source, dest=args.dest, name=args.name, tag=args.tag, excludes=args.excludes)
+    res = sync(source=args.source, dest=args.dest, name=args.name, tag=args.tag, excludes=args.exclude)
     logging.info("Calling rotate")
     rotate(dest=args.dest, name=args.name, tag=args.tag, keep=args.keep)
 
