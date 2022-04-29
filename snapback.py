@@ -66,7 +66,9 @@ def main():
         logging.error("{} is not a directory".format(args.dest))
         sys.exit(1)
 
+    logging.info("Calling sync")
     res = sync(source=args.source, dest=args.dest, name=args.name, tag=args.tag, excludes=args.excludes)
+    logging.info("Calling rotate")
     rotate(dest=args.dest, name=args.name, tag=args.tag, keep=args.keep)
 
     # Remove lock file
