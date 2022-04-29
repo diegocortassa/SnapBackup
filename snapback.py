@@ -178,7 +178,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
 
     current_snapshot = os.path.join(dest, "snapback_{}_{}_{}".format(name, timestamp, tag))
 
-    search_glob = os.path.join(dest, "snapback_{}_*_{}".format(name, tag))
+    search_glob = os.path.join(dest, "snapback_{}_*".format(name))
     snapshots_list = sorted(glob.glob(search_glob))
     if len(snapshots_list):
         last_snapshot = snapshots_list[-1]
