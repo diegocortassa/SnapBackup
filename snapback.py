@@ -86,9 +86,9 @@ def configure_logging():
     logger.setLevel(logging.DEBUG)
 
     if "DEBUG" in os.environ:
-        formatter = logging.Formatter('%(asctime)s %(levelname)-8s|%(module)s.%(funcName)s (%(lineno)d)> %(message)s', '%Y-%m-%d %H:%M:%S')
+        formatter = logging.Formatter("%(asctime)s %(levelname)-8s|%(module)s.%(funcName)s (%(lineno)d)> %(message)s", "%Y-%m-%d %H:%M:%S")
     else:
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(module)s %(message)s', '%Y-%m-%d %H:%M:%S')
+        formatter = logging.Formatter("%(asctime)s %(levelname)s %(module)s %(message)s", "%Y-%m-%d %H:%M:%S")
 
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
@@ -113,8 +113,8 @@ def launch_command(cmd_line):
     # output = subprocess.check_output(cmd_line, stderr=subprocess.STDOUT)
     pipe = subprocess.Popen(cmd_line, stdout=subprocess.PIPE, universal_newlines=True)
     with pipe.stdout:
-        for line in iter(pipe.stdout.readline, ''):
-            logging.info("{}: {}".format(cmd_line[0], line.rstrip('\n')))
+        for line in iter(pipe.stdout.readline, ""):
+            logging.info("{}: {}".format(cmd_line[0], line.rstrip("\n")))
     return_code = pipe.wait()  # wait for the command to finish and get return code
 
     if return_code > 0:
@@ -134,7 +134,7 @@ def touch(path):
     if os.path.isdir(path):
         os.utime(path, None)
     else:
-        with open(path, 'a'):
+        with open(path, "a"):
             os.utime(path, None)
 
 
@@ -198,7 +198,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     if not os.path.exists(dest):
         os.makedirs(dest)
 
-    cmd_line = ['rsync', "-va", "--human-readable", "--delete", "--delete-excluded"]
+    cmd_line = ["rsync", "-va", "--human-readable", "--delete", "--delete-excluded"]
 
     for exclude in excludes:
         cmd_line.append("--exclude=%s" % exclude)
@@ -221,5 +221,5 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
