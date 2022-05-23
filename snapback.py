@@ -177,6 +177,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     timestamp = time.strftime("%Y%m%d%I%M%S")
 
     current_snapshot = os.path.join(dest, "snapback_{}_{}_{}".format(name, timestamp, tag))
+    current_logfile = os.path.join(dest, "snapback_{}_{}_{}.log".format(name, timestamp, tag))
 
     search_glob = os.path.join(dest, "snapback_{}_*".format(name))
     snapshots_list = sorted(glob.glob(search_glob))
@@ -198,7 +199,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     if not os.path.exists(dest):
         os.makedirs(dest)
 
-    cmd_line = ["rsync", "-va", "--human-readable", "--delete", "--delete-excluded"]
+    cmd_line = ["rsync", "-rltD", "--human-readable", "--stats", "--log-file={}".format(current_logfile), "--delete", "--delete-excluded"]
 
     for exclude in excludes:
         cmd_line.append("--exclude=%s" % exclude)
@@ -211,6 +212,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     if result > 0:
         logging.error("Errors syncing %s" % source)
         return result
+    logging.info("Sync finished, log file: %s".format(current_logfile))
 
     # Update date on current snapshot directory
     touch(current_snapshot)
