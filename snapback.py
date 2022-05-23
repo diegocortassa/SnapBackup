@@ -212,7 +212,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     if result > 0:
         logging.error("Errors syncing %s" % source)
         return result
-    logging.info("Sync finished, log file: %s".format(current_logfile))
+    logging.info("Sync finished, log file: %s" % current_logfile)
 
     # Update date on current snapshot directory
     touch(current_snapshot)
