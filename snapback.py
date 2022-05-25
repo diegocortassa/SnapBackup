@@ -15,7 +15,7 @@
 #
 
 import argparse
-import glob
+import re
 import subprocess
 import logging
 import fcntl
@@ -151,13 +151,12 @@ def rotate(dest=None, name=None, tag=None, keep=-1):
     if keep < 1:
         return
 
-    search_glob = os.path.join(dest, "snapback_{}_*_{}".format(name, tag))
-    snapshots_list = sorted(glob.glob(search_glob))
+    snapshots_list = sorted([folder for folder in next(os.walk(dest))[1] if re.match(r"snapback_{}_[0-9]+_{}".format(name, tag), folder)])
     delete_list = snapshots_list[:-keep]
-
     for snapshot in delete_list:
-        logging.info("Deleting {}".format(snapshot))
-        shutil.rmtree(snapshot)
+        snapshot_path = os.path.join(dest, snapshot)
+        logging.info("Deleting {}".format(snapshot_path))
+        shutil.rmtree(snapshot_path)
 
 
 def sync(source=None, dest=None, name=None, tag=None, excludes=None):
@@ -179,10 +178,9 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     current_snapshot = os.path.join(dest, "snapback_{}_{}_{}".format(name, timestamp, tag))
     current_logfile = os.path.join(dest, "snapback_{}_{}_{}.log".format(name, timestamp, tag))
 
-    search_glob = os.path.join(dest, "snapback_{}_*".format(name))
-    snapshots_list = sorted(glob.glob(search_glob))
+    snapshots_list = sorted([folder for folder in next(os.walk(dest))[1] if re.match(r"^snapback_{}_[0-9]+_.*$".format(name), folder)])
     if len(snapshots_list):
-        last_snapshot = snapshots_list[-1]
+        last_snapshot = os.path.join(dest, snapshots_list[-1])
         logging.info("Copy-linking %s to %s" % (last_snapshot, current_snapshot))
         cmd_line = ["cp", "-a", "-l", last_snapshot, current_snapshot]
         result = launch_command(cmd_line)
@@ -212,7 +210,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     if result > 0:
         logging.error("Errors syncing %s" % source)
         return result
-    logging.info("Sync finished, log file: %s" % current_logfile)
+    logging.info("Sync finished, log file: %s".format(current_logfile))
 
     # Update date on current snapshot directory
     touch(current_snapshot)
