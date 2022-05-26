@@ -76,7 +76,7 @@ def main():
 
     elapsed_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
     logging.info("Finished")
-    logging.info("Elapsed time: %s" % elapsed_time)
+    logging.info("Elapsed time: {}".format(elapsed_time))
 
     sys.exit(res)
 
@@ -118,7 +118,7 @@ def launch_command(cmd_line):
     return_code = pipe.wait()  # wait for the command to finish and get return code
 
     if return_code > 0:
-        logging.error("ERROR returned by %s" % " ".join(cmd_line))
+        logging.error("ERROR returned by '{}'".format(" ".join(cmd_line)))
 
     return return_code
 
@@ -130,7 +130,7 @@ def touch(path):
     :param path: string file or directory path
     :return: nothing
     """
-    logging.info("Touching %s" % path)
+    logging.info("Touching {}".format(path))
     if os.path.isdir(path):
         os.utime(path, None)
     else:
@@ -181,11 +181,11 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     snapshots_list = sorted([folder for folder in next(os.walk(dest))[1] if re.match(r"^snapback_{}_[0-9]+_.*$".format(name), folder)])
     if len(snapshots_list):
         last_snapshot = os.path.join(dest, snapshots_list[-1])
-        logging.info("Copy-linking %s to %s" % (last_snapshot, current_snapshot))
+        logging.info("Copy-linking {} to {}".format(last_snapshot, current_snapshot))
         cmd_line = ["cp", "-a", "-l", last_snapshot, current_snapshot]
         result = launch_command(cmd_line)
         if result > 0:
-            logging.error("Errors copy-linking %s" % source)
+            logging.error("Errors copy-linking {}".format(source))
             return result
 
     # Make sure src end with a / to make sure
@@ -200,22 +200,22 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     cmd_line = ["rsync", "-rltD", "--human-readable", "--stats", "--log-file={}".format(current_logfile), "--delete", "--delete-excluded"]
 
     for exclude in excludes:
-        cmd_line.append("--exclude=%s" % exclude)
+        cmd_line.append("--exclude={}".format(exclude))
 
     cmd_line.append(source)
     cmd_line.append(current_snapshot)
 
-    logging.info("Syncing %s to %s" % (source, current_snapshot))
+    logging.info("Syncing {} to {}".format(source, current_snapshot))
     result = launch_command(cmd_line)
     if result > 0:
-        logging.error("Errors syncing %s" % source)
+        logging.error("Errors syncing {}".format(source))
         return result
-    logging.info("Sync finished, log file: %s".format(current_logfile))
+    logging.info("Sync finished, log file: {}".format(current_logfile))
 
     # Update date on current snapshot directory
     touch(current_snapshot)
     date = time.strftime("%Y%m%d_%I%M%S")
-    date_file = os.path.join(current_snapshot, "_backup_%s" % date)
+    date_file = os.path.join(current_snapshot, "_backup_{}".format(date))
     touch(date_file)
 
     return 0
