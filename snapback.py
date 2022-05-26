@@ -153,6 +153,11 @@ def rotate(dest=None, name=None, tag=None, keep=-1):
 
     snapshots_list = sorted([folder for folder in next(os.walk(dest))[1] if re.match(r"snapback_{}_[0-9]+_{}".format(name, tag), folder)])
     delete_list = snapshots_list[:-keep]
+
+    if not delete_list:
+        logging.info("No snapshots to be deleted")
+        return
+
     for snapshot in delete_list:
         snapshot_path = os.path.join(dest, snapshot)
         logging.info("Deleting {}".format(snapshot_path))
