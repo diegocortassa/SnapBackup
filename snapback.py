@@ -162,6 +162,11 @@ def rotate(dest=None, name=None, tag=None, keep=-1):
         snapshot_path = os.path.join(dest, snapshot)
         logging.info("Deleting {}".format(snapshot_path))
         shutil.rmtree(snapshot_path)
+        log_path = snapshot_path + ".log"
+        logging.info("Deleting log {}".format(log_path))
+        if os.path.exists(log_path):
+            os.remove(log_path)
+
 
 
 def sync(source=None, dest=None, name=None, tag=None, excludes=None):
@@ -181,7 +186,7 @@ def sync(source=None, dest=None, name=None, tag=None, excludes=None):
     timestamp = time.strftime("%Y%m%d%I%M%S")
 
     current_snapshot = os.path.join(dest, "snapback_{}_{}_{}".format(name, timestamp, tag))
-    current_logfile = os.path.join(dest, "snapback_{}_{}_{}.log".format(name, timestamp, tag))
+    current_logfile = current_snapshot + ".log"
 
     snapshots_list = sorted([folder for folder in next(os.walk(dest))[1] if re.match(r"^snapback_{}_[0-9]+_.*$".format(name), folder)])
     if len(snapshots_list):
