@@ -46,7 +46,7 @@ def main():
 
     configure_logging()
 
-    logging.info("Starting backup {} {}".format(args.name, args.tag))
+    logging.info("Starting backup name:{} tag:{} keep:{} from:{} to:{}".format(args.name, args.tag, args.keep, args.source, args.dest))
     start_time = time.time()
 
     # Lock file
