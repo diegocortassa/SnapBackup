@@ -15,14 +15,14 @@
 #
 
 import argparse
-import re
-import subprocess
-import logging
 import fcntl
-import sys
-import shutil
+import logging
 import os
 import platform
+import re
+import shutil
+import subprocess
+import sys
 import time
 
 exit_code = 0
